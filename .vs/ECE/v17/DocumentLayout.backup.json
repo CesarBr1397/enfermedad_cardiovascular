@@ -1,0 +1,54 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\mario.briseno\\Desktop\\ECE\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{E8746419-C867-42B5-9804-D3845C1D939D}|ECE.csproj|c:\\users\\mario.briseno\\desktop\\ece\\api\\v1\\controller\\enfermedadcardiovascularcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E8746419-C867-42B5-9804-D3845C1D939D}|ECE.csproj|solutionrelative:api\\v1\\controller\\enfermedadcardiovascularcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E8746419-C867-42B5-9804-D3845C1D939D}|ECE.csproj|c:\\users\\mario.briseno\\desktop\\ece\\ece.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{E8746419-C867-42B5-9804-D3845C1D939D}|ECE.csproj|solutionrelative:ece.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "EnfermedadCardiovascularController.cs",
+              "DocumentMoniker": "C:\\Users\\mario.briseno\\Desktop\\ECE\\Api\\V1\\Controller\\EnfermedadCardiovascularController.cs",
+              "RelativeDocumentMoniker": "Api\\V1\\Controller\\EnfermedadCardiovascularController.cs",
+              "ToolTip": "C:\\Users\\mario.briseno\\Desktop\\ECE\\Api\\V1\\Controller\\EnfermedadCardiovascularController.cs",
+              "RelativeToolTip": "Api\\V1\\Controller\\EnfermedadCardiovascularController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-26T18:07:15.262Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ECE",
+              "DocumentMoniker": "C:\\Users\\mario.briseno\\Desktop\\ECE\\ECE.csproj",
+              "RelativeDocumentMoniker": "ECE.csproj",
+              "ToolTip": "C:\\Users\\mario.briseno\\Desktop\\ECE\\ECE.csproj",
+              "RelativeToolTip": "ECE.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-12-26T18:06:37.349Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
