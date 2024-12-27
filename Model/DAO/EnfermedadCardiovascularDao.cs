@@ -83,16 +83,13 @@ namespace TsaakAPI.Model.DAO
                 if (respuestaBD.Data.Tables.Count > 0
                 && respuestaBD.Data.Tables[0].Rows.Count > 0)
                 {
-
                     VMCatalog aux = new VMCatalog
                     {
                         Id = (int)respuestaBD.Data.Tables[0].Rows[0]["id_enf_cardiovascular"],
                         Nombre = respuestaBD.Data.Tables[0].Rows[0]["nombre"].ToString(),
                         Descripcion = respuestaBD.Data.Tables[0].Rows[0]["descripcion"].ToString(),
                         Estado = respuestaBD.Data.Tables[0].Rows[0]["estado"] as bool?,
-
                     };
-
                     resultOperation.Result = aux;
                 }
                 else
@@ -101,7 +98,6 @@ namespace TsaakAPI.Model.DAO
                     resultOperation.Success = false;
                     resultOperation.AddErrorMessage($"No fue posible regresar el registro de la tabla. {respuestaBD.Detail}");
                 }
-
             }
             else
             {
@@ -126,10 +122,7 @@ namespace TsaakAPI.Model.DAO
                     {
                 new ParameterPGsql("p_nombre", NpgsqlTypes.NpgsqlDbType.Varchar, enfermedad.nombre),
                 new ParameterPGsql("p_descripcion", NpgsqlTypes.NpgsqlDbType.Varchar, enfermedad.descripcion),
-                new ParameterPGsql("p_fecha_registro", NpgsqlTypes.NpgsqlDbType.Date, enfermedad.fecha_registro),
-                new ParameterPGsql("p_fecha_inicio", NpgsqlTypes.NpgsqlDbType.Date, enfermedad.fecha_inicio),
-                new ParameterPGsql("p_estado", NpgsqlTypes.NpgsqlDbType.Boolean, enfermedad.estado),
-                new ParameterPGsql("p_fecha_actualizacion", NpgsqlTypes.NpgsqlDbType.Date, enfermedad.fecha_actualizacion)
+                new ParameterPGsql("p_estado", NpgsqlTypes.NpgsqlDbType.Boolean, enfermedad.estado)
                     }
                 );
 
@@ -161,49 +154,97 @@ namespace TsaakAPI.Model.DAO
             return resultOperation;
         }
 
-public async Task<ResultOperation<bool>> UpdateAsync(EnfermedadCardiovascular enfermedad, int id)
-{
-    ResultOperation<bool> resultOperation = new ResultOperation<bool>();
+        public async Task<ResultOperation<VMCatalog>> UpdateAsync(EnfermedadCardiovascular enfermedad, int id)
+        {
+            ResultOperation<VMCatalog> resultOperation = new ResultOperation<VMCatalog>();
+            enfermedad.id_enf_cardiovascular = id;
 
-    try
-    {
-        // Llama a la función PostgreSQL para actualizar el registro
-        RespuestaBD respuestaBD = await _sqlTools.ExecuteFunctionAsync(
-            "admece.fn_actualizar_enfermedad_cardiovascular",
-            new ParameterPGsql[]
-            {
+            Task<RespuestaBD> respuestaBDTask = _sqlTools.ExecuteFunctionAsync(
+                "admece.fn_actualizar_enfermedad_cardiovascular",
+                new ParameterPGsql[]
+                {
                 new ParameterPGsql("p_id_enf_cardiovascular", NpgsqlTypes.NpgsqlDbType.Integer, id),
-                new ParameterPGsql("p_nombre", NpgsqlTypes.NpgsqlDbType.Varchar, enfermedad.nombre ?? string.Empty),
-                new ParameterPGsql("p_descripcion", NpgsqlTypes.NpgsqlDbType.Varchar, enfermedad.descripcion ?? string.Empty),
-                new ParameterPGsql("p_fecha_inicio", NpgsqlTypes.NpgsqlDbType.Date, enfermedad.fecha_inicio),
-                new ParameterPGsql("p_estado", NpgsqlTypes.NpgsqlDbType.Boolean, enfermedad.estado),
-                new ParameterPGsql("p_fecha_actualizacion", NpgsqlTypes.NpgsqlDbType.Date, enfermedad.fecha_actualizacion)
+                new ParameterPGsql("p_nombre", NpgsqlTypes.NpgsqlDbType.Varchar, enfermedad.nombre),
+                new ParameterPGsql("p_descripcion", NpgsqlTypes.NpgsqlDbType.Varchar, enfermedad.descripcion),
+                new ParameterPGsql("p_estado", NpgsqlTypes.NpgsqlDbType.Boolean, true),
+                }
+            );
+            RespuestaBD respuestaBD = await respuestaBDTask;
+            resultOperation.Success = !respuestaBD.ExisteError;
+            if (!respuestaBD.ExisteError)
+            {
+                if (respuestaBD.Data.Tables.Count > 0
+                && respuestaBD.Data.Tables[0].Rows.Count > 0)
+                {
+                    VMCatalog aux = new VMCatalog
+                    {
+                        Id = (int)respuestaBD.Data.Tables[0].Rows[0]["id_enf_cardiovascular"],
+                        Nombre = respuestaBD.Data.Tables[0].Rows[0]["nombre"].ToString(),
+                        Descripcion = respuestaBD.Data.Tables[0].Rows[0]["descripcion"].ToString(),
+                        Estado = respuestaBD.Data.Tables[0].Rows[0]["estado"] as bool?,
+                    };
+                    resultOperation.Result = aux;
+                }
+                else
+                {
+                    resultOperation.Result = null;
+                    resultOperation.Success = false;
+                    resultOperation.AddErrorMessage("No se encontró el registro actualizado.");
+                }
             }
-        );
-
-        resultOperation.Success = !respuestaBD.ExisteError;
-
-        if (!respuestaBD.ExisteError)
-        {
-            resultOperation.Result = true;
+            else
+            {
+                resultOperation.Success = false;
+                resultOperation.AddErrorMessage($"Error al actualizar el registro: {respuestaBD.Mensaje}");
+            }
+            return resultOperation;
         }
-        else
-        {
-            resultOperation.Result = false;
-            resultOperation.AddErrorMessage($"Error al actualizar el registro: {respuestaBD.Mensaje}");
-        }
-    }
-    catch (Exception ex)
-    {
-        resultOperation.Success = false;
-        resultOperation.AddErrorMessage($"Excepción al actualizar el registro: {ex.Message}");
-    }
 
-    return resultOperation;
+        public async Task<ResultOperation<VMCatalog>> DeleteAsync(int id)
+        {
+            ResultOperation<VMCatalog> resultOperation = new ResultOperation<VMCatalog>();
+
+
+            Task<RespuestaBD> respuestaBDTask = _sqlTools.ExecuteFunctionAsync(
+                "admece.fn_borrar_logico_enfermedad_cardiovascular",
+                new ParameterPGsql[]
+                {
+                new ParameterPGsql("p_id_enf_cardiovascular", NpgsqlTypes.NpgsqlDbType.Integer, id)
+                }
+            );
+
+            RespuestaBD respuestaBD = await respuestaBDTask;
+            resultOperation.Success = !respuestaBD.ExisteError;
+            if (!respuestaBD.ExisteError)
+            {
+                if (respuestaBD.Data.Tables.Count > 0
+                && respuestaBD.Data.Tables[0].Rows.Count > 0)
+                {
+                    VMCatalog aux = new VMCatalog
+                    {
+                        Id = (int)respuestaBD.Data.Tables[0].Rows[0]["id_enf_cardiovascular"],
+                        Nombre = respuestaBD.Data.Tables[0].Rows[0]["nombre"].ToString(),
+                        Descripcion = respuestaBD.Data.Tables[0].Rows[0]["descripcion"].ToString(),
+                        Estado = respuestaBD.Data.Tables[0].Rows[0]["estado"] as bool?,
+                    };
+                    resultOperation.Result = aux;
+                }
+                else
+                {
+                    resultOperation.Result = null;
+                    resultOperation.Success = false;
+                    resultOperation.AddErrorMessage("No se encontró el registro actualizado.");
+                }
+            }
+            else
+            {
+                resultOperation.Success = false;
+                resultOperation.AddErrorMessage($"Error al eliminar el registro: {respuestaBD.Mensaje}");
+            }
+            return resultOperation;
+        }
+
 }
-
-
-    }
 }
 
 

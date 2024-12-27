@@ -73,3 +73,4 @@ C:\Users\mario.briseno\Desktop\ECE\obj\Debug\net6.0\refint\ECE.dll
 C:\Users\mario.briseno\Desktop\ECE\obj\Debug\net6.0\ECE.pdb
 C:\Users\mario.briseno\Desktop\ECE\obj\Debug\net6.0\ECE.genruntimeconfig.cache
 C:\Users\mario.briseno\Desktop\ECE\obj\Debug\net6.0\ref\ECE.dll
+c:\Users\mario.briseno\Desktop\ECE\obj\Debug\net6.0\ECE.sourcelink.json

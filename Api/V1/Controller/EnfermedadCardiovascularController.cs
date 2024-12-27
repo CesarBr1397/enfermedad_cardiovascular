@@ -97,6 +97,7 @@ namespace TsaakAPI.Api.V1.Controller
         [HttpPut("{id}")]
         public async Task<IActionResult> Put([FromBody] EnfermedadCardiovascular enf, int id)
         {
+            enf.id_enf_cardiovascular = id;
             // Llamada al DAO para actualizar el registro
             var result = await _enfermedadCardiovascularDao.UpdateAsync(enf, id);
 
@@ -104,7 +105,27 @@ namespace TsaakAPI.Api.V1.Controller
             if (result.Success)
             {
                 // Si es exitosa, devuelve un mensaje con estado 200 OK
-                return Ok(new { message = "Registro editado exitosamente.", id = id });
+                return Ok(new { message = "Registro editado exitosamente.", id = enf.id_enf_cardiovascular });
+            }
+            else
+            {
+                // Si no fue exitosa, devuelve un error con el detalle
+                return BadRequest(new { message = result.Messages });
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+
+            // Llamada al DAO para actualizar el registro
+            var result = await _enfermedadCardiovascularDao.DeleteAsync(id);
+
+            // Verifica si la operación fue exitosa
+            if (result.Success)
+            {
+                // Si es exitosa, devuelve un mensaje con estado 200 OK
+                return Ok(new { message = "Registro eliminado exitosamente.", id = id});
             }
             else
             {
