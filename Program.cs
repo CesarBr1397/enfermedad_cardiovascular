@@ -1,4 +1,5 @@
 using ConnectionTools.DBTools;
+using ECE.Model.DAO;
 using TsaakAPI.Model.DAO;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,12 +14,16 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Obtener la cadena de conexión desde appsettings.json
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+string defaultConnection = builder.Configuration.GetConnectionString("DefaultConnection");
+string secondaryConnection = builder.Configuration.GetConnectionString("SecondaryConnection");
 
 
 // Registrar la clase EnfermedadCardiovascularDao con el connectionString
 builder.Services.AddScoped<EnfermedadCardiovascularDao>(provider =>
-    new EnfermedadCardiovascularDao(connectionString));
+    new EnfermedadCardiovascularDao(defaultConnection));
+
+builder.Services.AddScoped<enfermedadCronicaDao>(provider =>
+    new enfermedadCronicaDao(secondaryConnection));
 
 var app = builder.Build();
 
