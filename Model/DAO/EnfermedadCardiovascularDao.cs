@@ -122,7 +122,10 @@ namespace TsaakAPI.Model.DAO
                     {
                 new ParameterPGsql("p_nombre", NpgsqlTypes.NpgsqlDbType.Varchar, enfermedad.nombre),
                 new ParameterPGsql("p_descripcion", NpgsqlTypes.NpgsqlDbType.Varchar, enfermedad.descripcion),
-                new ParameterPGsql("p_estado", NpgsqlTypes.NpgsqlDbType.Boolean, enfermedad.estado)
+                new ParameterPGsql("p_fecha_registro", NpgsqlTypes.NpgsqlDbType.Date, enfermedad.fecha_registro2),
+                new ParameterPGsql("p_fecha_inicio", NpgsqlTypes.NpgsqlDbType.Date, enfermedad.fecha_inicio2),
+                new ParameterPGsql("p_estado", NpgsqlTypes.NpgsqlDbType.Boolean, enfermedad.estado),
+                new ParameterPGsql("p_fecha_actualizacion", NpgsqlTypes.NpgsqlDbType.Date, enfermedad.fecha_actualizacion2)
                     }
                 );
 
@@ -160,12 +163,13 @@ namespace TsaakAPI.Model.DAO
             enfermedad.id_enf_cardiovascular = id;
 
             Task<RespuestaBD> respuestaBDTask = _sqlTools.ExecuteFunctionAsync(
-                "admece.fn_actualizar_enfermedad_cardiovascular",
+                "admece.fn_patch_enfermedad_cardiovascular",
                 new ParameterPGsql[]
                 {
                 new ParameterPGsql("p_id_enf_cardiovascular", NpgsqlTypes.NpgsqlDbType.Integer, id),
                 new ParameterPGsql("p_nombre", NpgsqlTypes.NpgsqlDbType.Varchar, enfermedad.nombre),
                 new ParameterPGsql("p_descripcion", NpgsqlTypes.NpgsqlDbType.Varchar, enfermedad.descripcion),
+                new ParameterPGsql("p_fecha_actualizacion", NpgsqlTypes.NpgsqlDbType.Date, enfermedad.fecha_actualizacion),
                 new ParameterPGsql("p_estado", NpgsqlTypes.NpgsqlDbType.Boolean, true),
                 }
             );

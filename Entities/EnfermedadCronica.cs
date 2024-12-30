@@ -12,11 +12,11 @@ namespace Entidad.Models
         [Required]
         public string? descripcion { get; set; }
         [Required]
-        public DateTime fecha_registro { get; set; }
+        public DateOnly fecha_registro { get; set; }
         [Required]
-        public DateTime fecha_inicio { get; set; }
+        public DateOnly fecha_inicio { get; set; }
         [Required]
         public bool estado { get; set; }
-        public DateTime fecha_actualizacion { get; set; }
+        public DateOnly fecha_actualizacion { get; set; }
     }
 }

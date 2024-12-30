@@ -94,8 +94,8 @@ namespace TsaakAPI.Api.V1.Controller
             }
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put([FromBody] EnfermedadCardiovascular enf, int id)
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> Patch([FromBody] EnfermedadCardiovascular enf, int id)
         {
             enf.id_enf_cardiovascular = id;
             // Llamada al DAO para actualizar el registro
