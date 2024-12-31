@@ -85,7 +85,8 @@ namespace TsaakAPI.Api.V1.Controller
             if (result.Success)
             {
                 // Si es exitosa, devuelve el ID del nuevo registro con un estado 201 Created
-                return CreatedAtAction(nameof(Post), new { id = result.Result }, new { message = "Registro agregado exitosamente.", id = result.Result });
+                // return CreatedAtAction(nameof(Post), new { id = result.Result }, new { message = "Registro agregado exitosamente.", id = result.Result });
+                return Ok();
             }
             else
             {
@@ -105,7 +106,8 @@ namespace TsaakAPI.Api.V1.Controller
             if (result.Success)
             {
                 // Si es exitosa, devuelve un mensaje con estado 200 OK
-                return Ok(new { message = "Registro editado exitosamente.", id = enf.id_enf_cardiovascular });
+                // return Ok(new { message = "Registro editado exitosamente.", id = enf.id_enf_cardiovascular });
+                return Ok();
             }
             else
             {
@@ -125,7 +127,8 @@ namespace TsaakAPI.Api.V1.Controller
             if (result.Success)
             {
                 // Si es exitosa, devuelve un mensaje con estado 200 OK
-                return Ok(new { message = "Registro eliminado exitosamente.", id = id});
+                // return Ok(new { message = "Registro eliminado exitosamente.", id = id});
+                return Ok();
             }
             else
             {

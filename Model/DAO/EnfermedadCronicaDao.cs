@@ -166,8 +166,6 @@ namespace ECE.Model.DAO
                 new ParameterPGsql("p_id_enf_cronica", NpgsqlTypes.NpgsqlDbType.Integer, id),
                 new ParameterPGsql("p_nombre", NpgsqlTypes.NpgsqlDbType.Varchar, enfermedad.nombre),
                 new ParameterPGsql("p_descripcion", NpgsqlTypes.NpgsqlDbType.Varchar, enfermedad.descripcion),
-                new ParameterPGsql("p_fecha_registro", NpgsqlTypes.NpgsqlDbType.Date, enfermedad.fecha_registro),
-                new ParameterPGsql("p_fecha_inicio", NpgsqlTypes.NpgsqlDbType.Date, enfermedad.fecha_inicio),
                 new ParameterPGsql("p_estado", NpgsqlTypes.NpgsqlDbType.Boolean, enfermedad.estado),
                 new ParameterPGsql("p_fecha_actualizacion", NpgsqlTypes.NpgsqlDbType.Date, enfermedad.fecha_actualizacion)
                 }
