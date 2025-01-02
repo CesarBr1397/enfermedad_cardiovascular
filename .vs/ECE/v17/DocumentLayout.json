@@ -51,8 +51,7 @@
               "RelativeToolTip": "Entities\\VMCatalog.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-26T18:12:16.925Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-26T18:12:16.925Z"
             },
             {
               "$type": "Document",
@@ -64,8 +63,7 @@
               "RelativeToolTip": "Entities\\EnfermedadCardiovascular.cs",
               "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-26T18:12:07.386Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-26T18:12:07.386Z"
             },
             {
               "$type": "Document",
@@ -77,8 +75,7 @@
               "RelativeToolTip": "Api\\V1\\Controller\\EnfermedadCardiovascularController.cs",
               "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-26T18:07:15.262Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-26T18:07:15.262Z"
             }
           ]
         }

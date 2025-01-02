@@ -19,24 +19,48 @@ namespace ECE.Api.V1.Controllers
             _configuration = configuration;
         }
 
+        // [HttpGet]
+        // public async Task<IActionResult> Get()
+        // {
+        //     // Llamada al DAO para obtener el registro
+        //     var result = await _enfermedadCronicaDao.GetAll();
+
+        //     // Verifica si la operación fue exitosa
+        //     if (result.Success)
+        //     {
+        //         // Si es exitosa, devuelve el resultado con un estado 200 OK
+        //         return Ok(result.Result);
+        //     }
+        //     else
+        //     {
+        //         // Si no fue exitosa, devuelve un error con el detalle
+        //         return BadRequest(new { message = result.Messages });
+        //     }
+        // }
+
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery] int page = 1, [FromQuery] int fetch = 10)
         {
-            // Llamada al DAO para obtener el registro
-            var result = await _enfermedadCronicaDao.GetAll();
+            // Llamada al DAO para obtener los registros con paginación
+            var result = await _enfermedadCronicaDao.GetAll(page, fetch);
+
+            HttpContext.Response.Headers.Add("Custom-Header", $"Registros: {fetch}");
 
             // Verifica si la operación fue exitosa
             if (result.Success)
             {
                 // Si es exitosa, devuelve el resultado con un estado 200 OK
-                return Ok(result.Result);
+                return Ok(result);
             }
             else
             {
                 // Si no fue exitosa, devuelve un error con el detalle
-                return BadRequest(new { message = result.Messages });
+
+                return NoContent();
+                // return BadRequest(new { message = result.Messages });
             }
         }
+
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
@@ -53,7 +77,9 @@ namespace ECE.Api.V1.Controllers
             else
             {
                 // Si no fue exitosa, devuelve un error con el detalle
-                return BadRequest(new { message = result.Messages });
+
+                return NoContent();
+                // return BadRequest(new { message = result.Messages });
             }
         }
         [HttpPost]
@@ -72,7 +98,9 @@ namespace ECE.Api.V1.Controllers
             else
             {
                 // Si no fue exitosa, devuelve un error con el detalle
-                return BadRequest(new { message = result.Messages });
+
+                return NoContent();
+                // return BadRequest(new { message = result.Messages });
             }
         }
 
@@ -93,7 +121,9 @@ namespace ECE.Api.V1.Controllers
             else
             {
                 // Si no fue exitosa, devuelve un error con el detalle
-                return BadRequest(new { message = result.Messages });
+
+                return NoContent();
+                // return BadRequest(new { message = result.Messages });
             }
         }
 
@@ -114,7 +144,9 @@ namespace ECE.Api.V1.Controllers
             else
             {
                 // Si no fue exitosa, devuelve un error con el detalle
-                return BadRequest(new { message = result.Messages });
+
+                return NoContent();
+                // return BadRequest(new { message = result.Messages });
             }
         }
     }

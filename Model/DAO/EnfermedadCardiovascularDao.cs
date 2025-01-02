@@ -24,9 +24,9 @@ namespace TsaakAPI.Model.DAO
 
         }
 
-        public async Task<ResultOperation<List<VMCatalog>>> GetAll()
+        public async Task<ResultOperation<DataTableView<VMCatalog>>> GetAll(int page, int fetch)
         {
-            ResultOperation<List<VMCatalog>> resultOperation = new ResultOperation<List<VMCatalog>>();
+            ResultOperation<DataTableView<VMCatalog>> resultOperation = new ResultOperation<DataTableView<VMCatalog>>();
 
             Task<RespuestaBD> respuestaBDTask = _sqlTools.ExecuteFunctionAsync("admece.fn_get_all");
             RespuestaBD respuestaBD = await respuestaBDTask;
@@ -50,24 +50,79 @@ namespace TsaakAPI.Model.DAO
                         catalogos.Add(catalogo);
                     }
 
-                    resultOperation.Result = catalogos;
+                    int totalItems = catalogos.Count;
+
+                    Pager pager = new Pager(page, fetch, totalItems);
+
+                    List<VMCatalog> paginatedResults = catalogos
+                        .Skip((page - 1) * fetch)
+                        .Take(fetch)
+                        .ToList();
+
+                    DataTableView<VMCatalog> dataTableView = new DataTableView<VMCatalog>(pager, paginatedResults);
+
+                    resultOperation.Result = dataTableView;
                 }
                 else
                 {
                     resultOperation.Result = null;
                     resultOperation.Success = false;
-                    resultOperation.AddErrorMessage($"No se encontraron registros en la tabla.");
+                    resultOperation.AddErrorMessage("No se encontraron registros en la tabla.");
                 }
             }
             else
             {
-                // Manejo de errores (log, excepciones, etc.)
                 Console.WriteLine("Error {0} - {1} - {2} - {3}", respuestaBD.ExisteError, respuestaBD.Mensaje, respuestaBD.CodeSqlError, respuestaBD.Detail);
                 throw new Exception(respuestaBD.Mensaje);
             }
 
             return resultOperation;
         }
+
+        // public async Task<ResultOperation<List<VMCatalog>>> GetAll()
+        // {
+        //     ResultOperation<List<VMCatalog>> resultOperation = new ResultOperation<List<VMCatalog>>();
+
+        //     Task<RespuestaBD> respuestaBDTask = _sqlTools.ExecuteFunctionAsync("admece.fn_get_all");
+        //     RespuestaBD respuestaBD = await respuestaBDTask;
+        //     resultOperation.Success = !respuestaBD.ExisteError;
+
+        //     if (!respuestaBD.ExisteError)
+        //     {
+        //         if (respuestaBD.Data.Tables.Count > 0 && respuestaBD.Data.Tables[0].Rows.Count > 0)
+        //         {
+        //             List<VMCatalog> catalogos = new List<VMCatalog>();
+
+        //             foreach (DataRow row in respuestaBD.Data.Tables[0].Rows)
+        //             {
+        //                 VMCatalog catalogo = new VMCatalog
+        //                 {
+        //                     Id = (int)row["id_enf_cardiovascular"],
+        //                     Nombre = row["nombre"].ToString(),
+        //                     Descripcion = row["descripcion"].ToString(),
+        //                     Estado = (bool?)row["estado"]
+        //                 };
+        //                 catalogos.Add(catalogo);
+        //             }
+
+        //             resultOperation.Result = catalogos;
+        //         }
+        //         else
+        //         {
+        //             resultOperation.Result = null;
+        //             resultOperation.Success = false;
+        //             resultOperation.AddErrorMessage($"No se encontraron registros en la tabla.");
+        //         }
+        //     }
+        //     else
+        //     {
+        //         // Manejo de errores (log, excepciones, etc.)
+        //         Console.WriteLine("Error {0} - {1} - {2} - {3}", respuestaBD.ExisteError, respuestaBD.Mensaje, respuestaBD.CodeSqlError, respuestaBD.Detail);
+        //         throw new Exception(respuestaBD.Mensaje);
+        //     }
+
+        //     return resultOperation;
+        // }
 
         public async Task<ResultOperation<VMCatalog>> GetByIdAsync(int id)
         {
@@ -248,7 +303,7 @@ namespace TsaakAPI.Model.DAO
             return resultOperation;
         }
 
-}
+    }
 }
 
 

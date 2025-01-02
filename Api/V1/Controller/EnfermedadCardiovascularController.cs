@@ -57,23 +57,46 @@ namespace TsaakAPI.Api.V1.Controller
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery] int page = 1, [FromQuery] int fetch = 10)
         {
-            // Llamada al DAO para obtener el registro
-            var result = await _enfermedadCardiovascularDao.GetAll();
+            // Llamada al DAO para obtener los registros con paginación
+            var result = await _enfermedadCardiovascularDao.GetAll(page, fetch);
+
+            HttpContext.Response.Headers.Add("Custom-Header", $"Registros: {fetch}");
 
             // Verifica si la operación fue exitosa
             if (result.Success)
             {
                 // Si es exitosa, devuelve el resultado con un estado 200 OK
-                return Ok(result.Result);
+                return Ok(result);
             }
             else
             {
                 // Si no fue exitosa, devuelve un error con el detalle
-                return BadRequest(new { message = result.Messages });
+
+                return NoContent();
+                // return BadRequest(new { message = result.Messages });
             }
         }
+
+        // [HttpGet]
+        // public async Task<IActionResult> Get()
+        // {
+        //     // Llamada al DAO para obtener el registro
+        //     var result = await _enfermedadCardiovascularDao.GetAll();
+
+        //     // Verifica si la operación fue exitosa
+        //     if (result.Success)
+        //     {
+        //         // Si es exitosa, devuelve el resultado con un estado 200 OK
+        //         return Ok(result.Result);
+        //     }
+        //     else
+        //     {
+        //         // Si no fue exitosa, devuelve un error con el detalle
+        //         return BadRequest(new { message = result.Messages });
+        //     }
+        // }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] EnfermedadCardiovascular enf)
@@ -85,13 +108,16 @@ namespace TsaakAPI.Api.V1.Controller
             if (result.Success)
             {
                 // Si es exitosa, devuelve el ID del nuevo registro con un estado 201 Created
+
                 // return CreatedAtAction(nameof(Post), new { id = result.Result }, new { message = "Registro agregado exitosamente.", id = result.Result });
                 return Ok();
             }
             else
             {
                 // Si no fue exitosa, devuelve un error con el detalle
-                return BadRequest(new { message = result.Messages });
+
+                return NoContent();
+                // return BadRequest(new { message = result.Messages });
             }
         }
 
@@ -106,13 +132,16 @@ namespace TsaakAPI.Api.V1.Controller
             if (result.Success)
             {
                 // Si es exitosa, devuelve un mensaje con estado 200 OK
+
                 // return Ok(new { message = "Registro editado exitosamente.", id = enf.id_enf_cardiovascular });
                 return Ok();
             }
             else
             {
                 // Si no fue exitosa, devuelve un error con el detalle
-                return BadRequest(new { message = result.Messages });
+
+                return NoContent();
+                // return BadRequest(new { message = result.Messages });
             }
         }
 
@@ -127,13 +156,16 @@ namespace TsaakAPI.Api.V1.Controller
             if (result.Success)
             {
                 // Si es exitosa, devuelve un mensaje con estado 200 OK
+
                 // return Ok(new { message = "Registro eliminado exitosamente.", id = id});
                 return Ok();
             }
             else
             {
                 // Si no fue exitosa, devuelve un error con el detalle
-                return BadRequest(new { message = result.Messages });
+
+                return NoContent();
+                // return BadRequest(new { message = result.Messages });
             }
         }
 
