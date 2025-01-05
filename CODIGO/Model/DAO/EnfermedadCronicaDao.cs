@@ -76,6 +76,62 @@ namespace ECE.Model.DAO
             return resultOperation;
         }
 
+        public async Task<ResultOperation<DataTableView<VMCatalog>>> GetPageFetchPostgresql(int page, int fetch)
+        {
+            ResultOperation<DataTableView<VMCatalog>> resultOperation = new ResultOperation<DataTableView<VMCatalog>>();
+
+            // Crear los parámetros para la función PostgreSQL
+            var parameters = new ConnectionTools.DBTools.ParameterPGsql[]
+            {
+                new ParameterPGsql("p_page", NpgsqlTypes.NpgsqlDbType.Integer, page),
+                new ParameterPGsql("p_fetch", NpgsqlTypes.NpgsqlDbType.Integer, fetch)
+            };
+
+            // Llamar a la función con los parámetros correctos
+            Task<RespuestaBD> respuestaBDTask = _sqlTools.ExecuteFunctionAsync("schemasye.obtener_todos_enfermedades_Page_Fetch", parameters);
+            RespuestaBD respuestaBD = await respuestaBDTask;
+
+            resultOperation.Success = !respuestaBD.ExisteError;
+
+            if (!respuestaBD.ExisteError)
+            {
+                if (respuestaBD.Data.Tables.Count > 0 && respuestaBD.Data.Tables[0].Rows.Count > 0)
+                {
+                    // Mapear los resultados directamente desde la tabla
+                    List<VMCatalog> catalogos = respuestaBD.Data.Tables[0].AsEnumerable()
+                        .Select(row => new VMCatalog
+                        {
+                            Id = (int)row["id_enf_cronica"],
+                            Nombre = row["nombre"].ToString(),
+                            Descripcion = row["descripcion"].ToString(),
+                            Estado = row["estado"] as bool?
+                        }).ToList();
+
+                    // Calcular el total de elementos (esto podría ser optimizado si el total se calcula en la base de datos)
+                    int totalItems = catalogos.Count;
+
+                    // Crear la estructura de paginación
+                    Pager pager = new Pager(page, fetch, totalItems);
+                    DataTableView<VMCatalog> dataTableView = new DataTableView<VMCatalog>(pager, catalogos);
+
+                    resultOperation.Result = dataTableView;
+                }
+                else
+                {
+                    resultOperation.Result = null;
+                    resultOperation.Success = false;
+                    resultOperation.AddErrorMessage("No se encontraron registros en la tabla.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Error {0} - {1} - {2} - {3}", respuestaBD.ExisteError, respuestaBD.Mensaje, respuestaBD.CodeSqlError, respuestaBD.Detail);
+                throw new Exception(respuestaBD.Mensaje);
+            }
+
+            return resultOperation;
+        }
+
 
         public async Task<ResultOperation<List<EnfermedadCronica>>> GetCompleto()
         {
@@ -105,7 +161,7 @@ namespace ECE.Model.DAO
                         };
                         enfermedades.Add(enfermedad);
                     }
-                    
+
                     resultOperation.Result = enfermedades;
                 }
                 else

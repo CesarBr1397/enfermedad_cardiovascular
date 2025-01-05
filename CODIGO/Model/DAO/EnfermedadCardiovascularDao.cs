@@ -24,6 +24,60 @@ namespace TsaakAPI.Model.DAO
 
         }
 
+
+        public async Task<ResultOperation<DataTableView<VMCatalog>>> GetPageFetchPostgrestql(int page, int fetch)
+        {
+            ResultOperation<DataTableView<VMCatalog>> resultOperation = new ResultOperation<DataTableView<VMCatalog>>();
+
+            // Crear los parámetros de la función PostgreSQL
+            var parameters = new ConnectionTools.DBTools.ParameterPGsql[]
+            {
+                new ParameterPGsql("p_page", NpgsqlTypes.NpgsqlDbType.Integer, page),
+                new ParameterPGsql("p_fetch", NpgsqlTypes.NpgsqlDbType.Integer, fetch)
+            };
+
+            // Llamar a la función con los parámetros correctos
+            Task<RespuestaBD> respuestaBDTask = _sqlTools.ExecuteFunctionAsync("admece.fn_get_all_Page_Fetch", parameters);
+
+            RespuestaBD respuestaBD = await respuestaBDTask;
+            resultOperation.Success = !respuestaBD.ExisteError;
+
+            if (!respuestaBD.ExisteError)
+            {
+                if (respuestaBD.Data.Tables.Count > 0 && respuestaBD.Data.Tables[0].Rows.Count > 0)
+                {
+                    List<VMCatalog> catalogos = respuestaBD.Data.Tables[0].AsEnumerable()
+                        .Select(row => new VMCatalog
+                        {
+                            Id = (int)row["id_enf_cardiovascular"],
+                            Nombre = row["nombre"].ToString(),
+                            Descripcion = row["descripcion"].ToString(),
+                            Estado = (bool?)row["estado"]
+                        }).ToList();
+
+                    Pager pager = new Pager(page, fetch, respuestaBD.Data.Tables[0].Rows.Count);
+
+                    DataTableView<VMCatalog> dataTableView = new DataTableView<VMCatalog>(pager, catalogos);
+
+                    resultOperation.Result = dataTableView;
+                }
+                else
+                {
+                    resultOperation.Result = null;
+                    resultOperation.Success = false;
+                    resultOperation.AddErrorMessage("No se encontraron registros en la tabla.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Error {0} - {1} - {2} - {3}", respuestaBD.ExisteError, respuestaBD.Mensaje, respuestaBD.CodeSqlError, respuestaBD.Detail);
+                throw new Exception(respuestaBD.Mensaje);
+            }
+
+            return resultOperation;
+        }
+
+
         public async Task<ResultOperation<DataTableView<VMCatalog>>> GetPageFetch(int page, int fetch)
         {
             ResultOperation<DataTableView<VMCatalog>> resultOperation = new ResultOperation<DataTableView<VMCatalog>>();

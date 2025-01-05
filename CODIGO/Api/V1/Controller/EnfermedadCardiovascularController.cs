@@ -37,30 +37,34 @@ namespace TsaakAPI.Api.V1.Controller
         }*/
 
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
-        {
-            // Llamada al DAO para obtener el registro
-            var result = await _enfermedadCardiovascularDao.GetByIdAsync(id);
-
-            // Verifica si la operación fue exitosa
-            if (result.Success)
-            {
-                // Si es exitosa, devuelve el resultado con un estado 200 OK
-                return Ok(result.Result);
-            }
-            else
-            {
-                // Si no fue exitosa, devuelve un error con el detalle
-                return BadRequest(new { message = result.Messages });
-            }
-        }
-
         [HttpGet("PageFetch")]
         public async Task<IActionResult> Get([FromQuery] int page = 1, [FromQuery] int fetch = 10)
         {
             // Llamada al DAO para obtener los registros con paginación
             var result = await _enfermedadCardiovascularDao.GetPageFetch(page, fetch);
+
+            HttpContext.Response.Headers.Add("Custom-Header", $"Registros: {fetch}");
+
+            // Verifica si la operación fue exitosa
+            if (result.Success)
+            {
+                // Si es exitosa, devuelve el resultado con un estado 200 OK
+                return Ok(result);
+            }
+            else
+            {
+                // Si no fue exitosa, devuelve un error con el detalle
+
+                return NoContent();
+                // return BadRequest(new { message = result.Messages });
+            }
+        }
+
+        [HttpGet("PageFetchPostgrest")]
+        public async Task<IActionResult> GetPageFetch([FromQuery] int page = 1, [FromQuery] int fetch = 10)
+        {
+            // Llamada al DAO para obtener los registros con paginación
+            var result = await _enfermedadCardiovascularDao.GetPageFetchPostgrestql(page, fetch);
 
             HttpContext.Response.Headers.Add("Custom-Header", $"Registros: {fetch}");
 
@@ -146,6 +150,26 @@ namespace TsaakAPI.Api.V1.Controller
                 return BadRequest(new { message = result.Messages });
             }
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            // Llamada al DAO para obtener el registro
+            var result = await _enfermedadCardiovascularDao.GetByIdAsync(id);
+
+            // Verifica si la operación fue exitosa
+            if (result.Success)
+            {
+                // Si es exitosa, devuelve el resultado con un estado 200 OK
+                return Ok(result.Result);
+            }
+            else
+            {
+                // Si no fue exitosa, devuelve un error con el detalle
+                return BadRequest(new { message = result.Messages });
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] EnfermedadCardiovascular enf)
         {
