@@ -1,15 +1,13 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Api",
-    "\\Api\\V1",
-    "\\Api\\V1\\Controller",
-    "\\Model",
-    "\\Model\\DAO",
-    "\\obj",
-    "\\Properties",
-    "\\Util"
+    "\\CODIGO",
+    "\\CODIGO\\Api",
+    "\\CODIGO\\Api\\V1",
+    "\\CODIGO\\Api\\V1\\Controller",
+    "\\CODIGO\\Model",
+    "\\CODIGO\\Model\\DAO"
   ],
-  "SelectedNode": "\\ECE.sln",
+  "SelectedNode": "\\CODIGO\\Api\\V1\\Controller\\EnfermedadCronicaController.cs",
   "PreviewInSolutionExplorer": false
 }

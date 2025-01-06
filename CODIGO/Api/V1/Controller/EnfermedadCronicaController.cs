@@ -42,22 +42,13 @@ namespace ECE.Api.V1.Controllers
         public async Task<IActionResult> GetDiccionario()
         {
             // Llamada al DAO para obtener los registros
-            var result = await _enfermedadCronicaDao.GetAll();
+            var result = await _enfermedadCronicaDao.GetDiccionario();
 
             // Verifica si la operación fue exitosa
             if (result.Success)
             {
-                // Transformar la lista en un formato de diccionario
-                var diccionario = result.Result.Select(enf => new Dictionary<string, object>
-        {
-            { "1", enf.Id },
-            { "2", enf.Nombre },
-            { "3", enf.Descripcion },
-            { "4", enf.Estado }
-        }).ToList();
-
-                // Si es exitosa, devuelve el diccionario con un estado 200 OK
-                return Ok(diccionario);
+                // Si es exitosa, devuelve el resultado con un estado 200 OK
+                return Ok(result.Result);
             }
             else
             {

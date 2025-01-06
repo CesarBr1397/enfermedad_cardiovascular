@@ -21,22 +21,6 @@ namespace TsaakAPI.Api.V1.Controller
             _configuration = configuration;
 
         }
-
-
-        /*[HttpGet]
-        public async Task<IActionResult> GetEnfermedadCardiovascular()
-        {
-            var result = await _enfermedadCardiovascularDao.ObtenerEnfermedadCardiovascular();
-
-            if (!result.Success || result.Result == null || !result.Result.Any())
-            {
-                return NotFound(result); // Return 404 if no records are found
-            }
-
-            return Ok(result); // Return 200 with the list of results
-        }*/
-
-
         [HttpGet("PageFetch")]
         public async Task<IActionResult> Get([FromQuery] int page = 1, [FromQuery] int fetch = 10)
         {
@@ -125,22 +109,11 @@ namespace TsaakAPI.Api.V1.Controller
         public async Task<IActionResult> GetDiccionario()
         {
             // Llamada al DAO para obtener el registro
-            var result = await _enfermedadCardiovascularDao.GetAll();
+            var result = await _enfermedadCardiovascularDao.GetDiccionario();
 
             // Verifica si la operación fue exitosa
             if (result.Success)
             {
-                // Transformar la lista en un formato de diccionario
-                var diccionario = result.Result.Select(enf => new Dictionary<string, object>
-        {
-            { "1", enf.Id },
-            { "2", enf.Nombre },
-            { "3", enf.Descripcion },
-            { "4", enf.Estado }
-        }).ToList();
-
-                // Si es exitosa, devuelve el diccionario con un estado 200 OK
-                return Ok(diccionario);
                 // Si es exitosa, devuelve el resultado con un estado 200 OK
                 return Ok(result.Result);
             }
@@ -244,3 +217,17 @@ namespace TsaakAPI.Api.V1.Controller
 
     }
 }
+
+
+        /*[HttpGet]
+        public async Task<IActionResult> GetEnfermedadCardiovascular()
+        {
+            var result = await _enfermedadCardiovascularDao.ObtenerEnfermedadCardiovascular();
+
+            if (!result.Success || result.Result == null || !result.Result.Any())
+            {
+                return NotFound(result); // Return 404 if no records are found
+            }
+
+            return Ok(result); // Return 200 with the list of results
+        }*/

@@ -226,6 +226,56 @@ namespace TsaakAPI.Model.DAO
             return resultOperation;
         }
 
+
+        public async Task<ResultOperation<List<Dictionary<string, object>>>> GetDiccionario()
+        {
+            ResultOperation<List<Dictionary<string, object>>> resultOperation = new ResultOperation<List<Dictionary<string, object>>>();
+
+            Task<RespuestaBD> respuestaBDTask = _sqlTools.ExecuteFunctionAsync("admece.fn_get_all");
+            RespuestaBD respuestaBD = await respuestaBDTask;
+            resultOperation.Success = !respuestaBD.ExisteError;
+
+            if (!respuestaBD.ExisteError)
+            {
+                if (respuestaBD.Data.Tables.Count > 0 && respuestaBD.Data.Tables[0].Rows.Count > 0)
+                {
+                    // Crear una lista de diccionarios
+                    List<Dictionary<string, object>> diccionarios = new List<Dictionary<string, object>>();
+
+                    foreach (DataRow row in respuestaBD.Data.Tables[0].Rows)
+                    {
+                        Dictionary<string, object> diccionario = new Dictionary<string, object>
+                {
+                    { "1", (int)row["id_enf_cardiovascular"] },
+                    { "2", row["nombre"].ToString() },
+                    { "3", row["descripcion"].ToString() },
+                    { "4", (bool?)row["estado"] }
+                };
+
+                        diccionarios.Add(diccionario);
+                    }
+
+                    resultOperation.Result = diccionarios;
+                }
+                else
+                {
+                    resultOperation.Result = null;
+                    resultOperation.Success = false;
+                    resultOperation.AddErrorMessage($"No se encontraron registros en la tabla.");
+                }
+            }
+            else
+            {
+                // Manejo de errores (log, excepciones, etc.)
+                Console.WriteLine("Error {0} - {1} - {2} - {3}", respuestaBD.ExisteError, respuestaBD.Mensaje, respuestaBD.CodeSqlError, respuestaBD.Detail);
+                throw new Exception(respuestaBD.Mensaje);
+            }
+
+            return resultOperation;
+        }
+
+
+
         public async Task<ResultOperation<VMCatalog>> GetByIdAsync(int id)
         {
             ResultOperation<VMCatalog> resultOperation = new ResultOperation<VMCatalog>();
