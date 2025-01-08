@@ -29,7 +29,7 @@ namespace ECE.Api.V1.Controllers
             if (result.Success)
             {
                 // Si es exitosa, devuelve el resultado con un estado 200 OK
-                return Ok(result.Result);
+                return Ok(result);
             }
             else
             {
@@ -48,7 +48,7 @@ namespace ECE.Api.V1.Controllers
             if (result.Success)
             {
                 // Si es exitosa, devuelve el resultado con un estado 200 OK
-                return Ok(result.Result);
+                return Ok(result);
             }
             else
             {
@@ -68,7 +68,7 @@ namespace ECE.Api.V1.Controllers
             if (result.Success)
             {
                 // Si es exitosa, devuelve el resultado con un estado 200 OK
-                return Ok(result.Result);
+                return Ok(result);
             }
             else
             {
@@ -78,7 +78,7 @@ namespace ECE.Api.V1.Controllers
         }
 
         [HttpGet("PageFetch")]
-        public async Task<IActionResult> Get([FromQuery] int page = 1, [FromQuery] int fetch = 10)
+        public async Task<IActionResult> Get([FromQuery] int page, [FromQuery] int fetch )
         {
             // Llamada al DAO para obtener los registros con paginación
             var result = await _enfermedadCronicaDao.GetPageFetch(page, fetch);
@@ -101,7 +101,7 @@ namespace ECE.Api.V1.Controllers
         }
 
         [HttpGet("PageFetchPostgresql")]
-        public async Task<IActionResult> GetPageFetch([FromQuery] int page = 1, [FromQuery] int fetch = 10)
+        public async Task<IActionResult> GetPageFetch([FromQuery] int page, [FromQuery] int fetch)
         {
             // Llamada al DAO para obtener los registros con paginación
             var result = await _enfermedadCronicaDao.GetPageFetchPostgresql(page, fetch);
@@ -134,7 +134,7 @@ namespace ECE.Api.V1.Controllers
             if (result.Success)
             {
                 // Si es exitosa, devuelve el resultado con un estado 200 OK
-                return Ok(result.Result);
+                return Ok(result);
             }
             else
             {
