@@ -23,9 +23,15 @@ BEGIN
         t.estado,
         t.fecha_actualizacion
     FROM schemasye."tc_enfermedad_cronica" t
+		where
+	t.estado = true
     ORDER BY t.id_enf_cronica ASC
     LIMIT p_fetch
     OFFSET (p_page - 1) * p_fetch;
+
+	if p_page <= 0 or p_fetch <=0 then
+return query select * from schemasye.obtener_todos_enfermedades();
+end if;
 END;
 $BODY$;
 

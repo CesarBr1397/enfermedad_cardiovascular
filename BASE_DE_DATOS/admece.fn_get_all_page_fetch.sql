@@ -24,10 +24,17 @@ BEGIN
         ec.fecha_actualizacion
     FROM
         admece.tc_enfermedad_cardiovascular ec
+		    WHERE
+        ec.estado = true
     ORDER BY
         ec.id_enf_cardiovascular ASC
     LIMIT p_fetch
     OFFSET (p_page - 1) * p_fetch;
+
+if p_page <= 0 or p_fetch <=0 then
+return query select * from admece.fn_get_all();
+end if;
+	
 END;
 $BODY$;
 

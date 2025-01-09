@@ -15,6 +15,8 @@ BEGIN
     RETURN QUERY 
     SELECT t.id_enf_cronica, t.nombre, t.descripcion, t.fecha_registro, t.fecha_inicio, t.estado, t.fecha_actualizacion
     FROM schemasye."tc_enfermedad_cronica" t
+	where
+	t.estado = true
     ORDER BY t.id_enf_cronica ASC;
 END;
 $BODY$;
