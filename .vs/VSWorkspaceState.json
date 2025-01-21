@@ -6,8 +6,9 @@
     "\\CODIGO\\Api\\V1",
     "\\CODIGO\\Api\\V1\\Controller",
     "\\CODIGO\\Model",
-    "\\CODIGO\\Model\\DAO"
+    "\\CODIGO\\Model\\DAO",
+    "\\Test"
   ],
-  "SelectedNode": "\\CODIGO\\Api\\V1\\Controller\\EnfermedadCronicaController.cs",
+  "SelectedNode": "\\Test\\UnitTest1.cs",
   "PreviewInSolutionExplorer": false
 }

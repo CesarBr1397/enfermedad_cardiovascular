@@ -25,6 +25,52 @@ namespace TsaakAPI.Model.DAO
         }
 
 
+        public async Task<ResultOperation<List<ModeloBase>>> GetFechas()
+        {
+            ResultOperation<List<ModeloBase>> resultOperation = new ResultOperation<List<ModeloBase>>();
+
+            Task<RespuestaBD> respuestaBDTask = _sqlTools.ExecuteFunctionAsync("admece.fn_get_all");
+            RespuestaBD respuestaBD = await respuestaBDTask;
+            resultOperation.Success = !respuestaBD.ExisteError;
+
+            if (!respuestaBD.ExisteError)
+            {
+                if (respuestaBD.Data.Tables.Count > 0 && respuestaBD.Data.Tables[0].Rows.Count > 0)
+                {
+                    List<ModeloBase> catalogos = new List<ModeloBase>();
+
+                    foreach (DataRow row in respuestaBD.Data.Tables[0].Rows)
+                    {
+                        ModeloBase catalogo = new ModeloBase
+                        {
+                            id_enf_cardiovascular = (int)row["id_enf_cardiovascular"],
+                            fecha_registro2 = (DateTime)row["fecha_registro"],
+                            fecha_inicio2 = (DateTime)row["fecha_inicio"],
+                            fecha_actualizacion2 = (DateTime)row["fecha_actualizacion"]
+                        };
+                        catalogos.Add(catalogo);
+                    }
+
+                    resultOperation.Result = catalogos;
+                }
+                else
+                {
+                    resultOperation.Result = null;
+                    resultOperation.Success = false;
+                    resultOperation.AddErrorMessage($"No se encontraron registros en la tabla.");
+                }
+            }
+            else
+            {
+                // Manejo de errores (log, excepciones, etc.)
+                Console.WriteLine("Error {0} - {1} - {2} - {3}", respuestaBD.ExisteError, respuestaBD.Mensaje, respuestaBD.CodeSqlError, respuestaBD.Detail);
+                throw new Exception(respuestaBD.Mensaje);
+            }
+
+            return resultOperation;
+        }
+
+
         public async Task<ResultOperation<DataTableView<VMCatalog>>> GetPageFetchPostgrestql(int page, int fetch)
         {
             ResultOperation<DataTableView<VMCatalog>> resultOperation = new ResultOperation<DataTableView<VMCatalog>>();

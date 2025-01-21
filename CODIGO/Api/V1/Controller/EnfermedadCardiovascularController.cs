@@ -86,6 +86,25 @@ namespace TsaakAPI.Api.V1.Controller
             }
         }
 
+        [HttpGet("Fechas")]
+        public async Task<IActionResult> GetFechas()
+        {
+            // Llamada al DAO para obtener el registro
+            var result = await _enfermedadCardiovascularDao.GetFechas();
+
+            // Verifica si la operación fue exitosa
+            if (result.Success)
+            {
+                // Si es exitosa, devuelve el resultado con un estado 200 OK
+                return Ok(result);
+            }
+            else
+            {
+                // Si no fue exitosa, devuelve un error con el detalle
+                return BadRequest(new { message = result.Messages });
+            }
+        }
+
         [HttpGet("completo")]
         public async Task<IActionResult> GetCompleto()
         {
